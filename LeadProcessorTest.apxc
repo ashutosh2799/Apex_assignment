@@ -1,0 +1,25 @@
+@isTest
+public class LeadProcessorTest {
+	@testSetup
+    public static void setup(){
+        List<Lead> l_lst = new List<Lead>();
+        for(Integer i=0; i<20; i++){
+            Lead l=new Lead();
+            l.LastName = 'name'+i;
+            l.Company = 'Company';
+            l.Status = 'Random Status';
+            l.Country = 'US' ;
+            l_lst.add(l);
+        }
+        insert l_lst;
+    }
+    static testmethod void test() {
+        Test.startTest();
+        LeadProcessor lp = new LeadProcessor();
+        Id batchId = Database.executeBatch(lp);
+        Test.stopTest();
+        System.assertEquals(20, [select count() from Lead where Country = 'US']);
+
+    }
+    
+}
